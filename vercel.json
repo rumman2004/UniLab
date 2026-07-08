@@ -4,16 +4,51 @@
   "builds": [
     {
       "src": "Server/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": "Client/**"
-      }
+      "use": "@vercel/node"
+    },
+    {
+      "src": "Client/Public/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Client/Admin/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(style|script|assets)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ],
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/Server/server.js"
-    }
+    { "source": "/api/(.*)", "destination": "/Server/server.js" },
+    
+    { "source": "/", "destination": "/Client/Public/html/Home.html" },
+    { "source": "/pyq", "destination": "/Client/Public/html/PYQ.html" },
+    { "source": "/notes", "destination": "/Client/Public/html/Notes.html" },
+    { "source": "/external", "destination": "/Client/Public/html/ExternalNotes.html" },
+    { "source": "/about", "destination": "/Client/Public/html/About.html" },
+    { "source": "/faculty", "destination": "/Client/Public/html/Faculty.html" },
+    { "source": "/fees", "destination": "/Client/Public/html/FeeStructure.html" },
+    { "source": "/syllabus", "destination": "/Client/Public/html/Syllabus.html" },
+    { "source": "/support", "destination": "/Client/Public/html/Support.html" },
+    
+    { "source": "/admin", "destination": "/Client/Admin/html/Login.html" },
+    { "source": "/admin/login", "destination": "/Client/Admin/html/Login.html" },
+    { "source": "/admin/dashboard", "destination": "/Client/Admin/html/Dashboard.html" },
+    { "source": "/admin/papers", "destination": "/Client/Admin/html/Papers.html" },
+    { "source": "/admin/notes", "destination": "/Client/Admin/html/ManageNotes.html" },
+    { "source": "/admin/external", "destination": "/Client/Admin/html/ExternalNotes.html" },
+    
+    { "source": "/style/(.*)", "destination": "/Client/Public/style/$1" },
+    { "source": "/script/(.*)", "destination": "/Client/Public/script/$1" },
+    { "source": "/assets/(.*)", "destination": "/Client/Public/assets/$1" },
+    { "source": "/admin/script/(.*)", "destination": "/Client/Admin/script/$1" }
   ]
 }
