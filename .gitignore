@@ -3,11 +3,11 @@ node_modules/
 
 # Environment / secrets
 .env
-.env.local
+.env.*
 *.local
 
 # Build output (Tailwind is built on deploy)
-Client/Public/style/app.css
+# Removed Client/Public/style/app.css so Vercel includes it in the lambda.
 
 # Logs
 logs/
