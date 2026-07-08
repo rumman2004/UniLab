@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "builds": [
+    {
+      "src": "Server/server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": "Client/**"
+      }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/Server/server.js"
+    }
+  ]
+}

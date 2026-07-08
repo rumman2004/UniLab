@@ -1,0 +1,154 @@
+/* ============================================================
+   UniLab — Tailwind v4 source
+   Build:  npm run css:build   (outputs Client/Public/style/app.css)
+   ============================================================ */
+@import 'tailwindcss';
+
+/* Scan these files for used utility classes. */
+@source '../Public/**/*.{html,js}';
+@source '../Admin/**/*.{html,js}';
+
+/* ---- Design tokens (generates bg-brand-500, text-ink-700, etc.) ---- */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
+
+  /* Brand — indigo/violet */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+  --color-brand-950: #1e1b4b;
+
+  /* Accent — amber (highlights, PYQ tag) */
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #f59e0b;
+  --color-accent-600: #d97706;
+  --color-accent-700: #b45309;
+
+  /* Ink — neutral slate for text/surfaces */
+  --color-ink-50: #f8fafc;
+  --color-ink-100: #f1f5f9;
+  --color-ink-200: #e2e8f0;
+  --color-ink-300: #cbd5e1;
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-600: #475569;
+  --color-ink-700: #334155;
+  --color-ink-800: #1e293b;
+  --color-ink-900: #0f172a;
+
+  --radius-card: 1.25rem;
+  --shadow-soft: 0 4px 20px -2px rgba(15, 23, 42, 0.08),
+    0 0 3px rgba(15, 23, 42, 0.03);
+}
+
+/* ---- Base ---- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink-50 text-ink-800 font-sans antialiased selection:bg-brand-500/20 selection:text-brand-900;
+  }
+  h1, h2, h3, h4 {
+    @apply text-ink-900 font-bold tracking-tight font-heading;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-ink-50;
+  }
+}
+
+/* ---- Reusable "base" utilities (must be @utility so @apply can use them) ---- */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5
+    text-sm font-semibold transition-all duration-300 select-none
+    disabled:opacity-50 disabled:pointer-events-none hover:shadow-md hover:-translate-y-0.5;
+}
+@utility badge {
+  @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs
+    font-medium shadow-sm border border-transparent;
+}
+
+/* ---- Reusable components ---- */
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-brand-600 to-brand-500 text-white shadow-sm hover:from-brand-500 hover:to-brand-400 hover:shadow-brand-500/25
+      active:scale-[0.98];
+  }
+  .btn-outline {
+    @apply btn border border-ink-200 bg-white/50 backdrop-blur-sm text-ink-700 hover:bg-white
+      hover:border-ink-300 hover:shadow-ink-900/5;
+  }
+  .btn-ghost {
+    @apply btn text-ink-600 hover:bg-ink-100 hover:text-ink-900 hover:shadow-none hover:translate-y-0;
+  }
+  .btn-danger {
+    @apply btn bg-gradient-to-r from-red-600 to-red-500 text-white hover:from-red-500 hover:to-red-400 hover:shadow-red-500/25 active:scale-[0.98];
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs rounded-lg;
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-[var(--radius-card)] border border-white/40 bg-white/70 backdrop-blur-md
+      shadow-[var(--shadow-soft)] transition-all duration-300 hover:shadow-lg hover:border-white/80;
+  }
+
+  /* Form controls */
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-ink-700;
+  }
+  .input,
+  .select,
+  .textarea {
+    @apply w-full rounded-xl border border-ink-200 bg-white/80 backdrop-blur-sm px-4 py-3 text-sm
+      text-ink-900 placeholder:text-ink-400 shadow-sm transition-all duration-300
+      focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 focus:shadow-md;
+  }
+  .textarea {
+    @apply min-h-24 resize-y;
+  }
+
+  /* Badges / tags */
+  .badge-brand {
+    @apply badge bg-brand-50 text-brand-700 border-brand-200;
+  }
+  .badge-accent {
+    @apply badge bg-amber-50 text-accent-700 border-amber-200;
+  }
+  .badge-ink {
+    @apply badge bg-ink-100 text-ink-700 border-ink-200;
+  }
+
+  /* Admin sidebar link */
+  .nav-link {
+    @apply flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold
+      text-ink-600 transition-all duration-200 hover:bg-white hover:text-brand-600 hover:shadow-sm;
+  }
+  .nav-link.active {
+    @apply bg-brand-50 text-brand-700 shadow-sm border border-brand-100/50 relative overflow-hidden;
+  }
+  .nav-link.active::before {
+    @apply content-[''] absolute left-0 top-0 bottom-0 w-1 bg-brand-600 rounded-r-full;
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    @apply animate-pulse rounded-lg bg-ink-200/70;
+  }
+}

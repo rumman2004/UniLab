@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.local
+*.local
+
+# Build output (Tailwind is built on deploy)
+Client/Public/style/app.css
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Uploads (if any local temp storage is ever used)
+tmp/
+uploads/

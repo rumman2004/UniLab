@@ -1,0 +1,43 @@
+{
+  "name": "resource-bca",
+  "version": "1.0.0",
+  "description": "Resource BCA - Previous Year Question papers & subject notes portal for BCA students. Admin uploads, public downloads.",
+  "type": "module",
+  "main": "Server/server.js",
+  "scripts": {
+    "start": "node Server/server.js",
+    "dev": "concurrently -k -n \"CSS,SERVER\" -c \"magenta,cyan\" \"npm run css:watch\" \"nodemon Server/server.js\"",
+    "css:build": "tailwindcss -i ./Client/styles/input.css -o ./Client/Public/style/app.css --minify",
+    "css:watch": "tailwindcss -i ./Client/styles/input.css -o ./Client/Public/style/app.css --watch",
+    "build": "npm run css:build"
+  },
+  "keywords": [
+    "bca",
+    "pyq",
+    "notes",
+    "education",
+    "supabase",
+    "express"
+  ],
+  "author": "Rumman Ahmed",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^9.0.3",
+    "pdf-parse": "^2.4.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.7",
+    "tailwindcss": "^4.0.0"
+  }
+}

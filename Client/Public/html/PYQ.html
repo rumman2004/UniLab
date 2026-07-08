@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BCA PYQ Papers — Dibrugarh University | UniLab</title>
+  <meta name="description" content="Download previous year question papers (PYQ) for BCA Dibrugarh University. Filter by subject, semester, and year." />
+  <meta name="keywords" content="BCA PYQ, BCA previous year question papers, Dibrugarh University BCA papers, BCA exam papers" />
+  <meta property="og:title" content="BCA PYQ Papers — Dibrugarh University" />
+  <meta property="og:description" content="Download BCA previous year question papers instantly." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style/app.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='23' font-size='20' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E" />
+</head>
+<body class="bg-ink-50 text-ink-900 font-sans antialiased selection:bg-brand-500 selection:text-white">
+  <div id="site-nav"></div>
+
+  <!-- Decorative Background -->
+  <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    <div class="absolute -top-40 right-0 h-[400px] w-[400px] rounded-full bg-brand-400/20 blur-[100px] mix-blend-multiply"></div>
+  </div>
+
+  <main class="container-app relative z-10 py-12 lg:py-20">
+    <!-- Page header -->
+    <div class="mx-auto max-w-4xl text-center flex flex-col items-center gap-4">
+      <span class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 backdrop-blur-md shadow-sm">
+        <span class="text-sm font-semibold tracking-wide text-brand-700 uppercase">Previous Year Questions</span>
+      </span>
+      <h1 class="text-4xl font-black tracking-tight text-ink-900 sm:text-5xl lg:text-6xl">
+        PYQ <span class="bg-gradient-to-r from-brand-600 to-indigo-600 bg-clip-text text-transparent">Papers</span>
+      </h1>
+      <p class="max-w-2xl text-lg text-ink-600 leading-relaxed">Access real exam papers organized by subject, semester, and year. Dibrugarh University BCA curriculum.</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="mt-12 rounded-3xl border border-white/40 bg-white/60 p-6 backdrop-blur-xl shadow-xl shadow-brand-900/5 sm:p-8">
+      <div class="grid gap-4 md:grid-cols-12">
+        <div class="md:col-span-4">
+          <label class="mb-1 block text-xs font-semibold text-ink-500 uppercase tracking-wide">Search</label>
+          <input id="f-search" type="search" class="w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20" placeholder="🔍 Search by title…" />
+        </div>
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-xs font-semibold text-ink-500 uppercase tracking-wide">Subject</label>
+          <select id="f-subject" class="w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"><option value="">All subjects</option></select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-xs font-semibold text-ink-500 uppercase tracking-wide">Semester</label>
+          <select id="f-semester" class="w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"><option value="">All semesters</option></select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-xs font-semibold text-ink-500 uppercase tracking-wide">Year</label>
+          <select id="f-year" class="w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"><option value="">All years</option></select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-xs font-semibold text-ink-500 uppercase tracking-wide">Sort By</label>
+          <select id="f-sort" class="w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm transition-all focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
+            <option value="new">Newest</option>
+            <option value="downloads">Most downloaded</option>
+          </select>
+        </div>
+      </div>
+      <div class="mt-6 flex items-center justify-between border-t border-ink-100 pt-4">
+        <span id="result-count" class="text-sm font-medium text-ink-500"></span>
+        <button id="f-clear" class="rounded-lg bg-ink-100 px-4 py-2 text-sm font-semibold text-ink-600 transition-colors hover:bg-ink-200 hover:text-ink-900">Clear filters</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script type="module" src="/script/components.js"></script>
+  <script type="module" src="/script/pyq.js"></script>
+</body>
+</html>
