@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://www.unilab.example/sitemap.xml
+Sitemap: https://unilab-seven.vercel.app/sitemap.xml
