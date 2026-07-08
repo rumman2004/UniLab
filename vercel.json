@@ -39,6 +39,10 @@
     { "source": "/syllabus", "destination": "/Client/Public/html/Syllabus.html" },
     { "source": "/support", "destination": "/Client/Public/html/Support.html" },
     
+    { "source": "/sitemap.xml", "destination": "/Client/Public/sitemap.xml" },
+    { "source": "/robots.txt", "destination": "/Client/Public/robots.txt" },
+    { "source": "/google6aeb3eba148880ff.html", "destination": "/Client/Public/google6aeb3eba148880ff.html" },
+    
     { "source": "/admin", "destination": "/Client/Admin/html/Login.html" },
     { "source": "/admin/login", "destination": "/Client/Admin/html/Login.html" },
     { "source": "/admin/dashboard", "destination": "/Client/Admin/html/Dashboard.html" },
