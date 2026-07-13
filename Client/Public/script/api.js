@@ -36,7 +36,7 @@ export function toast(message, type = 'info') {
   if (!toastHost) {
     toastHost = document.createElement('div');
     toastHost.className =
-      'fixed z-[100] bottom-5 right-5 flex flex-col gap-2 max-w-sm';
+      'fixed z-[100] bottom-4 left-4 right-4 flex flex-col gap-2 sm:left-auto sm:right-5 sm:bottom-5 sm:max-w-sm';
     document.body.appendChild(toastHost);
   }
   const colors = {
@@ -72,7 +72,9 @@ export function formatBytes(bytes) {
 
 export function formatDate(iso) {
   if (!iso) return '';
-  return new Date(iso).toLocaleDateString(undefined, {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString(undefined, {
     day: 'numeric',
     month: 'short',
     year: 'numeric',

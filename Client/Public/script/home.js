@@ -3,6 +3,10 @@ import { api, esc, formatDate } from '/script/api.js';
 // Animate a number counting up to its final value.
 function countTo(el, target) {
   if (!el) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = target.toLocaleString();
+    return;
+  }
   const dur = 900;
   const start = performance.now();
   function tick(now) {
@@ -51,9 +55,9 @@ function renderRecent(papers) {
   host.innerHTML = papers
     .map(
       (p) => `
-      <a href="/pyq" class="group relative flex flex-col p-6 rounded-[2rem] bg-ink-800/40 border border-ink-700/50 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-ink-800/80 hover:border-brand-500/50 hover:shadow-2xl hover:shadow-brand-500/10">
+      <a href="/pyq" class="group relative flex min-h-[220px] flex-col rounded-lg border border-ink-700/60 bg-ink-800/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-ink-800 hover:border-brand-500/50 hover:shadow-2xl hover:shadow-brand-500/10">
         <div class="flex items-start justify-between gap-3 mb-4">
-          <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-500/20 to-indigo-500/20 text-brand-400 ring-1 ring-inset ring-brand-500/30 transition-transform group-hover:scale-105">
+          <div class="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-brand-500/15 text-brand-400 ring-1 ring-inset ring-brand-500/30 transition-transform group-hover:scale-105">
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
           </div>
           <span class="inline-flex items-center rounded-full bg-ink-800/80 px-3 py-1 text-xs font-semibold tracking-wide text-brand-300 ring-1 ring-inset ring-brand-500/30">

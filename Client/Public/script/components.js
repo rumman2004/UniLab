@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: '/notes', label: 'Notes' },
   { href: '/external', label: 'External Notes' },
   { href: '/syllabus', label: 'Syllabus' },
+  { href: '/support', label: 'Support' },
 ];
 
 function isActive(href) {
@@ -31,34 +32,34 @@ function navbar() {
     ).join('');
 
   return `
-  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/60 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] transition-all duration-300">
+  <header class="sticky top-0 z-50 border-b border-ink-200 bg-white/90 backdrop-blur-xl shadow-sm transition-all duration-300">
     <nav class="container-app flex h-[72px] items-center justify-between px-4 sm:px-6">
       <a href="/" class="flex items-center gap-1 group">
         <span class="text-2xl font-black tracking-tight text-ink-900">Uni<span class="text-brand-600">Lab</span></span>
       </a>
 
-      <div class="hidden items-center gap-8 text-sm md:flex">
+      <div class="hidden items-center gap-5 text-sm lg:flex">
         ${links('')}
       </div>
 
-      <div class="hidden items-center gap-4 md:flex">
-        <a href="/pyq" class="inline-flex items-center justify-center rounded-xl bg-ink-900 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-ink-900/20 transition-all hover:bg-brand-600 hover:shadow-brand-600/30 hover:-translate-y-0.5">
+      <div class="hidden items-center gap-4 lg:flex">
+        <a href="/pyq" class="inline-flex items-center justify-center rounded-lg bg-ink-900 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-brand-600 hover:shadow-brand-600/30 hover:-translate-y-0.5">
           Browse Papers
         </a>
       </div>
 
-      <button id="nav-toggle" aria-label="Open menu"
-        class="grid h-10 w-10 place-items-center rounded-xl text-ink-700 hover:bg-ink-100 focus:bg-ink-100 md:hidden transition-colors">
+      <button id="nav-toggle" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false"
+        class="grid h-10 w-10 place-items-center rounded-lg text-ink-700 hover:bg-ink-100 focus:bg-ink-100 lg:hidden transition-colors">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
       </button>
     </nav>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden overflow-hidden bg-white/95 backdrop-blur-xl border-t border-ink-100 shadow-2xl md:hidden transition-all duration-300">
-      <div class="container-app flex flex-col gap-2 p-6 text-base">
-        ${NAV_LINKS.map(l => `<a href="${l.href}" class="block rounded-lg px-4 py-3 font-semibold ${isActive(l.href) ? 'bg-brand-50 text-brand-700' : 'text-ink-600 hover:bg-ink-50 hover:text-ink-900'} transition-colors">${l.label}</a>`).join('')}
+    <div id="mobile-menu" class="hidden overflow-hidden bg-white border-t border-ink-100 shadow-xl lg:hidden transition-all duration-300">
+      <div class="container-app flex flex-col gap-2 p-4 text-base sm:p-6">
+        ${NAV_LINKS.map(l => `<a href="${l.href}" class="mobile-nav-link block rounded-lg px-4 py-3 font-semibold ${isActive(l.href) ? 'bg-brand-50 text-brand-700' : 'text-ink-600 hover:bg-ink-50 hover:text-ink-900'} transition-colors">${l.label}</a>`).join('')}
         <div class="mt-4 pt-4 border-t border-ink-100">
-          <a href="/pyq" class="flex w-full items-center justify-center rounded-xl bg-ink-900 px-5 py-3.5 text-center font-bold text-white shadow-lg transition-all hover:bg-brand-600">
+          <a href="/pyq" class="mobile-nav-link flex w-full items-center justify-center rounded-lg bg-ink-900 px-5 py-3.5 text-center font-bold text-white shadow-sm transition-all hover:bg-brand-600">
             Browse Papers
           </a>
         </div>
@@ -127,7 +128,40 @@ function mountChrome() {
 
   const toggle = document.getElementById('nav-toggle');
   const menu = document.getElementById('mobile-menu');
-  toggle?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+  const closeMenu = () => {
+    menu?.classList.add('hidden');
+    toggle?.setAttribute('aria-expanded', 'false');
+  };
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+  document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1024) closeMenu();
+  });
+
+  // Mobile filters toggle
+  const filterToggle = document.getElementById('toggle-filters');
+  const filterContainer = document.getElementById('filters-container');
+  if (filterToggle && filterContainer) {
+    const isFilterOpen = () => filterContainer.classList.contains('is-open') || window.innerWidth >= 1024;
+    filterToggle.setAttribute('aria-controls', 'filters-container');
+    filterToggle.setAttribute('aria-expanded', String(isFilterOpen()));
+    filterToggle.addEventListener('click', () => {
+      filterContainer.classList.toggle('is-open');
+      filterToggle.setAttribute('aria-expanded', String(isFilterOpen()));
+    });
+    window.addEventListener('resize', () => {
+      filterToggle.setAttribute('aria-expanded', String(isFilterOpen()));
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', mountChrome);

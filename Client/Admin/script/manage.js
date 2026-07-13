@@ -54,16 +54,16 @@ function fieldHtml(f) {
   const req = f.required ? 'required' : '';
   let control;
   if (f.type === 'select') {
-    control = `<select name="${f.name}" class="select" ${req}>
+    control = `<select name="${f.name}" class="select w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap" ${req}>
       <option value="">Select…</option>
       ${f.options.map((o) => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}
     </select>`;
   } else if (f.type === 'textarea') {
-    control = `<textarea name="${f.name}" class="textarea" placeholder="${esc(f.placeholder || '')}" ${req}></textarea>`;
+    control = `<textarea name="${f.name}" class="textarea w-full max-w-full" placeholder="${esc(f.placeholder || '')}" ${req}></textarea>`;
   } else {
-    control = `<input name="${f.name}" type="${f.type}" value="${esc(f.value || '')}" class="input" placeholder="${esc(f.placeholder || '')}" ${req} />`;
+    control = `<input name="${f.name}" type="${f.type}" value="${esc(f.value || '')}" class="input w-full max-w-full overflow-hidden text-ellipsis" placeholder="${esc(f.placeholder || '')}" ${req} />`;
   }
-  return `<div class="${span}" data-field="${f.name}"><label class="label">${esc(f.label)}${f.required ? ' *' : ''}</label>${control}</div>`;
+  return `<div class="${span} min-w-0" data-field="${f.name}"><label class="label">${esc(f.label)}${f.required ? ' *' : ''}</label>${control}</div>`;
 }
 
 export function initUploadForm({ endpoint, onUploaded }) {
@@ -212,19 +212,19 @@ export function initTable({ endpoint }) {
       }
       host.innerHTML = `
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm">
-            <thead class="border-b border-ink-200 text-xs uppercase tracking-wide text-ink-500">
+          <table class="w-full min-w-[860px] text-left text-sm">
+            <thead class="border-b border-ink-200 bg-ink-50/50 text-xs font-semibold uppercase tracking-wider text-ink-500 whitespace-nowrap">
               <tr>
-                <th class="px-4 py-3 font-semibold">Title</th>
-                <th class="px-4 py-3 font-semibold">Subject</th>
-                <th class="px-4 py-3 font-semibold">Sem</th>
-                <th class="px-4 py-3 font-semibold">Size</th>
-                <th class="px-4 py-3 font-semibold">Added</th>
-                <th class="px-4 py-3 font-semibold"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-ink-400"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg></th>
-                <th class="px-4 py-3"></th>
+                <th class="px-6 py-4">Title</th>
+                <th class="px-6 py-4">Subject</th>
+                <th class="px-6 py-4">Sem</th>
+                <th class="px-6 py-4">Size</th>
+                <th class="px-6 py-4">Added</th>
+                <th class="px-6 py-4"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-ink-400"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg></th>
+                <th class="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-ink-100">
+            <tbody class="divide-y divide-ink-100 bg-white">
               ${data.map(rowHtml).join('')}
             </tbody>
           </table>
@@ -249,7 +249,7 @@ export function initTable({ endpoint }) {
     overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 backdrop-blur-sm p-4';
     
     overlay.innerHTML = `
-      <div class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl p-6">
+      <div class="w-full max-w-2xl rounded-lg bg-white p-6 shadow-2xl">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-xl font-bold text-ink-900">Edit ${endpoint.replace('-', ' ')}</h2>
           <button class="modal-close text-ink-400 hover:text-ink-600"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
@@ -257,8 +257,8 @@ export function initTable({ endpoint }) {
         <form id="edit-form" class="grid grid-cols-1 gap-5 sm:grid-cols-2">
           ${FORM_FIELDS[endpoint].map(fieldHtml).join('')}
           <div class="sm:col-span-2 flex justify-end gap-3 mt-4">
-            <button type="button" class="modal-close btn-secondary btn-md">Cancel</button>
-            <button type="submit" class="btn-primary btn-md">Save Changes</button>
+            <button type="button" class="modal-close btn-outline">Cancel</button>
+            <button type="submit" class="btn-primary">Save Changes</button>
           </div>
         </form>
       </div>
@@ -382,18 +382,29 @@ export function initTable({ endpoint }) {
   }
 
   function rowHtml(r) {
-    return `<tr class="hover:bg-ink-50">
-      <td class="px-4 py-3">
-        <a href="${esc(r.file_url)}" target="_blank" rel="noopener" class="font-medium text-ink-900 hover:text-brand-600">${esc(r.title)}</a>
+    return `<tr class="group hover:bg-brand-50/30 transition-colors">
+      <td class="px-6 py-4">
+        <div class="flex items-center gap-3">
+          <div class="grid h-8 w-8 shrink-0 place-items-center rounded bg-brand-50 text-brand-600 ring-1 ring-inset ring-brand-500/20">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+          </div>
+          <a href="${esc(r.file_url)}" target="_blank" rel="noopener" class="font-semibold text-ink-900 group-hover:text-brand-600 transition-colors">${esc(r.title)}</a>
+        </div>
       </td>
-      <td class="px-4 py-3 text-ink-600">${esc(r.subject || '—')}</td>
-      <td class="px-4 py-3 text-ink-600">${r.semester ? esc(r.semester) : '—'}</td>
-      <td class="px-4 py-3 text-ink-500">${formatBytes(r.file_size)}</td>
-      <td class="px-4 py-3 text-ink-500">${formatDate(r.created_at)}</td>
-      <td class="px-4 py-3 text-ink-500">${r.downloads || 0}</td>
-      <td class="px-4 py-3 text-right space-x-2">
-        <button data-id="${r.id}" class="edit-btn btn-secondary btn-sm">Edit</button>
-        <button data-del="${r.id}" data-title="${esc(r.title)}" class="btn-danger btn-sm">Delete</button>
+      <td class="px-6 py-4 text-ink-600">${esc(r.subject || '—')}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-ink-600">${r.semester ? esc(r.semester) : '—'}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-ink-500 font-mono text-xs">${formatBytes(r.file_size)}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-ink-500">${formatDate(r.created_at)}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-ink-500 font-mono">${r.downloads || 0}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-right">
+        <div class="flex items-center justify-end gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
+          <button data-id="${r.id}" class="edit-btn rounded-lg p-2 text-ink-400 hover:bg-ink-100 hover:text-ink-900 transition-colors" title="Edit">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/></svg>
+          </button>
+          <button data-del="${r.id}" data-title="${esc(r.title)}" class="rounded-lg p-2 text-ink-400 hover:bg-red-50 hover:text-red-600 transition-colors" title="Delete">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+          </button>
+        </div>
       </td>
     </tr>`;
   }

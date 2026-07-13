@@ -19,43 +19,38 @@
   <div id="site-nav"></div>
 
   <main>
-    <!-- Premium Hero Section -->
-    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-white">
-      <!-- Animated Background Glows -->
+    <section class="relative flex min-h-[calc(100vh-72px)] items-center justify-center overflow-hidden bg-white">
       <div class="pointer-events-none absolute inset-0 z-0">
-        <div class="absolute -top-40 left-1/4 h-[500px] w-[500px] rounded-full bg-brand-400/30 blur-[120px] mix-blend-multiply animate-blob"></div>
-        <div class="absolute top-40 right-1/4 h-[400px] w-[400px] rounded-full bg-purple-400/30 blur-[120px] mix-blend-multiply animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-20 left-1/3 h-[600px] w-[600px] rounded-full bg-blue-300/20 blur-[120px] mix-blend-multiply animate-blob animation-delay-4000"></div>
-        <!-- Grid Pattern Overlay -->
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#0f172a0d_1px,transparent_1px),linear-gradient(to_bottom,#0f172a0d_1px,transparent_1px)] bg-[size:28px_28px]"></div>
+        <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink-50 to-transparent"></div>
       </div>
 
-      <div class="container-app relative z-10 px-6 py-20 text-center lg:py-32">
-        <div class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50/50 px-4 py-1.5 backdrop-blur-md mb-8 shadow-sm">
+      <div class="container-app relative z-10 px-6 py-16 text-center sm:py-20 lg:py-28">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 shadow-sm">
           <span class="flex h-2 w-2 rounded-full bg-brand-600 animate-pulse"></span>
-          <span class="text-sm font-semibold tracking-wide text-brand-700 uppercase">Your Ultimate Academic Companion</span>
+          <span class="text-xs font-semibold tracking-wide text-brand-700 uppercase sm:text-sm">Your Ultimate Academic Companion</span>
         </div>
         
-        <h1 class="mx-auto max-w-4xl text-5xl font-black tracking-tight text-ink-900 sm:text-6xl lg:text-7xl">
+        <h1 class="mx-auto max-w-4xl text-4xl font-black tracking-tight text-ink-900 sm:text-5xl lg:text-6xl">
           Master Your Exams with <br class="hidden sm:block" />
-          <span class="bg-gradient-to-r from-brand-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Premium Resources.</span>
+          <span class="text-brand-600">Premium Resources.</span>
         </h1>
         
-        <p class="mx-auto mt-6 max-w-2xl text-lg text-ink-600 sm:text-xl leading-relaxed">
+        <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">
           Access an organized, comprehensive library of previous year question papers and meticulously crafted subject notes for every BCA semester. 
         </p>
         
         <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="/pyq" class="group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-brand-600 px-8 py-4 font-bold text-white transition-all hover:bg-brand-700 hover:shadow-[0_0_40px_-10px_rgba(79,70,229,0.7)] hover:-translate-y-1">
+          <a href="/pyq" class="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-lg bg-brand-600 px-8 py-4 font-bold text-white transition-all hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-600/20 hover:-translate-y-1 sm:w-auto">
             <span class="absolute inset-0 bg-white/20 translate-y-full transition-transform duration-300 group-hover:translate-y-0"></span>
             <span class="relative flex items-center gap-2">Browse PYQ Papers <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg></span>
           </a>
-          <a href="/notes" class="inline-flex items-center justify-center rounded-xl border-2 border-ink-200 bg-white/50 backdrop-blur-sm px-8 py-4 font-bold text-ink-700 transition-all hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 hover:-translate-y-1">
+          <a href="/notes" class="inline-flex w-full items-center justify-center rounded-lg border border-ink-200 bg-white px-8 py-4 font-bold text-ink-700 transition-all hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 hover:-translate-y-1 sm:w-auto">
             Explore Subject Notes
           </a>
         </div>
 
-        <div class="mt-12 flex flex-wrap justify-center items-center gap-x-8 gap-y-4 text-sm font-medium text-ink-500">
+        <div class="mt-10 flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-sm font-medium text-ink-600">
           <div class="flex items-center gap-2"><div class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">✓</div> No Sign-ups Needed</div>
           <div class="flex items-center gap-2"><div class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">✓</div> 100% Free Forever</div>
           <div class="flex items-center gap-2"><div class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">✓</div> Instantly Downloadable</div>
@@ -63,24 +58,23 @@
       </div>
     </section>
 
-    <!-- Live Statistics Glass Card Section -->
     <section class="relative -mt-16 z-20 container-app px-4 sm:px-6">
-      <div class="rounded-3xl border border-white/40 bg-white/60 p-8 backdrop-blur-xl shadow-2xl shadow-brand-900/5 sm:p-10">
-        <div class="grid grid-cols-2 gap-8 md:grid-cols-4 divide-x divide-ink-100/50">
-          <div class="text-center group">
-            <div id="stat-papers" class="text-4xl sm:text-5xl font-black bg-gradient-to-br from-brand-600 to-indigo-600 bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110">—</div>
+      <div class="surface-panel p-4 sm:p-6">
+        <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <div class="rounded-lg border border-ink-100 bg-ink-50 p-5 text-center group">
+            <div id="stat-papers" class="text-3xl font-black text-brand-600 transition-transform duration-300 group-hover:scale-105 sm:text-4xl">—</div>
             <div class="mt-2 text-sm font-semibold tracking-wider text-ink-500 uppercase">PYQ Papers</div>
           </div>
-          <div class="text-center group">
-            <div id="stat-notes" class="text-4xl sm:text-5xl font-black bg-gradient-to-br from-amber-500 to-orange-500 bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110">—</div>
+          <div class="rounded-lg border border-ink-100 bg-ink-50 p-5 text-center group">
+            <div id="stat-notes" class="text-3xl font-black text-accent-600 transition-transform duration-300 group-hover:scale-105 sm:text-4xl">—</div>
             <div class="mt-2 text-sm font-semibold tracking-wider text-ink-500 uppercase">Study Notes</div>
           </div>
-          <div class="text-center group">
-            <div id="stat-downloads" class="text-4xl sm:text-5xl font-black bg-gradient-to-br from-emerald-500 to-teal-500 bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110">—</div>
+          <div class="rounded-lg border border-ink-100 bg-ink-50 p-5 text-center group">
+            <div id="stat-downloads" class="text-3xl font-black text-emerald-600 transition-transform duration-300 group-hover:scale-105 sm:text-4xl">—</div>
             <div class="mt-2 text-sm font-semibold tracking-wider text-ink-500 uppercase">Downloads</div>
           </div>
-          <div class="text-center group">
-            <div class="text-4xl sm:text-5xl font-black bg-gradient-to-br from-ink-700 to-ink-900 bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110">6</div>
+          <div class="rounded-lg border border-ink-100 bg-ink-50 p-5 text-center group">
+            <div class="text-3xl font-black text-ink-900 transition-transform duration-300 group-hover:scale-105 sm:text-4xl">6</div>
             <div class="mt-2 text-sm font-semibold tracking-wider text-ink-500 uppercase">Semesters</div>
           </div>
         </div>
@@ -97,24 +91,24 @@
 
       <div class="grid gap-8 md:grid-cols-3">
         <!-- Feature 1 -->
-        <div class="group rounded-3xl border border-ink-100 bg-white p-8 transition-all hover:border-brand-200 hover:shadow-xl hover:-translate-y-2">
-          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
+        <div class="group rounded-lg border border-ink-200 bg-white p-8 shadow-sm transition-all hover:border-brand-200 hover:shadow-xl hover:-translate-y-2">
+          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-lg bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           </div>
           <h4 class="text-xl font-bold text-ink-900 mb-3">Organized Archives</h4>
           <p class="text-ink-600 leading-relaxed">Real exam papers neatly categorized by semester, subject, and year. Stop guessing and start preparing with the exact format.</p>
         </div>
         <!-- Feature 2 -->
-        <div class="group rounded-3xl border border-ink-100 bg-white p-8 transition-all hover:border-amber-200 hover:shadow-xl hover:shadow-amber-900/5 hover:-translate-y-2">
-          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-500 group-hover:text-white">
+        <div class="group rounded-lg border border-ink-200 bg-white p-8 shadow-sm transition-all hover:border-amber-200 hover:shadow-xl hover:shadow-amber-900/5 hover:-translate-y-2">
+          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-lg bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-500 group-hover:text-white">
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           </div>
           <h4 class="text-xl font-bold text-ink-900 mb-3">Curated Notes</h4>
           <p class="text-ink-600 leading-relaxed">High-quality, unit-wise notes contributed by top students and faculty members. Revise concepts rapidly and thoroughly.</p>
         </div>
         <!-- Feature 3 -->
-        <div class="group rounded-3xl border border-ink-100 bg-white p-8 transition-all hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-900/5 hover:-translate-y-2">
-          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-500 group-hover:text-white">
+        <div class="group rounded-lg border border-ink-200 bg-white p-8 shadow-sm transition-all hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-900/5 hover:-translate-y-2">
+          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-500 group-hover:text-white">
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
           <h4 class="text-xl font-bold text-ink-900 mb-3">Lightning Fast</h4>
@@ -146,20 +140,15 @@
 
     <!-- Grand CTA -->
     <section class="container-app py-24 sm:py-32">
-      <div class="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-500 to-brand-700 px-6 py-16 sm:px-16 sm:py-24 text-center shadow-2xl border border-brand-400/20">
-        <!-- Grid Pattern Overlay -->
+      <div class="relative overflow-hidden rounded-lg bg-brand-700 px-6 py-16 text-center shadow-xl shadow-brand-900/20 sm:px-16 sm:py-20">
         <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-        
-        <!-- Decorative glows -->
-        <div class="absolute -top-24 -left-24 w-96 h-96 bg-brand-400 rounded-full blur-[120px] opacity-40 mix-blend-screen pointer-events-none"></div>
-        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-purple-500 rounded-full blur-[120px] opacity-40 mix-blend-screen pointer-events-none"></div>
         
         <div class="relative z-10 mx-auto max-w-2xl">
           <h2 class="text-3xl font-black tracking-tight text-white sm:text-5xl mb-6">Contribute to the community.</h2>
           <p class="text-lg text-brand-100 mb-10 leading-relaxed font-medium">
             We are constantly expanding our database. Have a recent question paper or some stellar handwritten notes? Share them and help thousands of your juniors succeed.
           </p>
-          <a href="/support" class="inline-flex items-center justify-center rounded-xl bg-white px-8 py-4 text-base font-bold text-brand-900 shadow-xl shadow-brand-900/20 transition-all hover:bg-brand-50 hover:shadow-2xl hover:shadow-brand-900/30 hover:-translate-y-1 hover:scale-105 active:scale-100">
+          <a href="/support" class="inline-flex items-center justify-center rounded-lg bg-white px-8 py-4 text-base font-bold text-brand-900 shadow-lg shadow-brand-900/20 transition-all hover:bg-brand-50 hover:shadow-xl hover:shadow-brand-900/30 hover:-translate-y-1 active:scale-100">
             Submit a Resource
           </a>
         </div>
@@ -168,25 +157,6 @@
   </main>
 
   <div id="site-footer"></div>
-
-  <!-- Adding CSS animations via style block specifically for the home page -->
-  <style>
-    @keyframes blob {
-      0% { transform: translate(0px, 0px) scale(1); }
-      33% { transform: translate(30px, -50px) scale(1.1); }
-      66% { transform: translate(-20px, 20px) scale(0.9); }
-      100% { transform: translate(0px, 0px) scale(1); }
-    }
-    .animate-blob {
-      animation: blob 7s infinite;
-    }
-    .animation-delay-2000 {
-      animation-delay: 2s;
-    }
-    .animation-delay-4000 {
-      animation-delay: 4s;
-    }
-  </style>
 
   <script type="module" src="/script/components.js"></script>
   <script type="module" src="/script/home.js"></script>
