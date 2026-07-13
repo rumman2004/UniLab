@@ -71,7 +71,7 @@ function navbar() {
 function footer() {
   const year = new Date().getFullYear();
   return `
-  <footer class="mt-32 bg-ink-900 text-ink-300">
+  <footer class="mt-32 bg-ink-900 text-ink-300 relative z-10">
     <!-- Decorative Top Border -->
     <div class="h-1.5 w-full bg-gradient-to-r from-brand-400 via-brand-600 to-indigo-600"></div>
     
