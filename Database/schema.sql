@@ -7,6 +7,7 @@
 create table if not exists public.papers (
   id          uuid primary key default gen_random_uuid(),
   title       text not null,
+  university  text,
   subject     text,
   course      text default 'BCA',
   semester    int,

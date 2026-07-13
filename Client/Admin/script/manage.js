@@ -14,22 +14,31 @@ const SUBJECTS_BY_SEM = {
   6: ['Major Project']
 };
 const EXAM_TYPES = ['End Term', 'Mid Term', 'Practical', 'Back/Supplementary', 'Other'];
+const UNIVERSITY_OPTIONS = [
+  'Dibrugarh University, Assam',
+  'Guahati University, Assam',
+  'Assam Kaziranga University, Assam',
+  'Royal Global University, Assam',
+  'Assam Downtown University, Assam',
+  'Others'
+];
 
 // ---- Form field definitions per resource type ----
 const FORM_FIELDS = {
   papers: [
-    { name: 'title', label: 'Paper title', type: 'text', required: true, placeholder: 'e.g. DBMS End Term 2023', col: 2 },
-    { name: 'subject', label: 'Subject', type: 'select', options: [] },
-    { name: 'course', label: 'Course', type: 'text', placeholder: 'BCA', value: 'BCA' },
+    { name: 'university', label: 'Name of the University', type: 'select', required: true, options: UNIVERSITY_OPTIONS.map((u) => ({ value: u, label: u })), col: 2 },
+    { name: 'title', label: 'Subject title', type: 'text', required: true, placeholder: 'e.g. DBMS End Term 2023', col: 2 },
+    { name: 'course', label: 'Course', type: 'select', options: [{value: 'BCA', label: 'BCA'}, {value: 'Others', label: 'Others'}] },
     { name: 'semester', label: 'Semester', type: 'select', options: SEM_OPTIONS.map((s) => ({ value: s, label: `Semester ${s}` })) },
+    { name: 'subject', label: 'Subject', type: 'select', options: [] },
     { name: 'year', label: 'Exam year', type: 'number', placeholder: 'e.g. 2023' },
     { name: 'exam_type', label: 'Exam type', type: 'select', options: EXAM_TYPES.map((t) => ({ value: t, label: t })) },
   ],
   notes: [
     { name: 'title', label: 'Notes title', type: 'text', required: true, placeholder: 'e.g. OS Unit 3 — Deadlocks', col: 2 },
-    { name: 'subject', label: 'Subject', type: 'select', options: [] },
     { name: 'course', label: 'Course', type: 'text', placeholder: 'BCA', value: 'BCA' },
     { name: 'semester', label: 'Semester', type: 'select', options: SEM_OPTIONS.map((s) => ({ value: s, label: `Semester ${s}` })) },
+    { name: 'subject', label: 'Subject', type: 'select', options: [] },
     { name: 'unit', label: 'Unit (optional)', type: 'text', placeholder: 'e.g. Unit 3' },
     { name: 'description', label: 'Description', type: 'text', placeholder: 'Brief summary', col: 2 },
   ],
@@ -54,7 +63,7 @@ function fieldHtml(f) {
   } else {
     control = `<input name="${f.name}" type="${f.type}" value="${esc(f.value || '')}" class="input" placeholder="${esc(f.placeholder || '')}" ${req} />`;
   }
-  return `<div class="${span}"><label class="label">${esc(f.label)}${f.required ? ' *' : ''}</label>${control}</div>`;
+  return `<div class="${span}" data-field="${f.name}"><label class="label">${esc(f.label)}${f.required ? ' *' : ''}</label>${control}</div>`;
 }
 
 export function initUploadForm({ endpoint, onUploaded }) {
@@ -99,6 +108,37 @@ export function initUploadForm({ endpoint, onUploaded }) {
     });
   }
 
+  const courseSelect = form.querySelector('[name="course"]');
+  const titleWrap = form.querySelector('[data-field="title"]');
+  const subjectWrap = form.querySelector('[data-field="subject"]');
+  const titleInput = form.querySelector('[name="title"]');
+  const subjectInput = form.querySelector('[name="subject"]');
+
+  if (endpoint === 'papers' && courseSelect) {
+    courseSelect.addEventListener('change', (e) => {
+      const val = e.target.value;
+      if (val === 'BCA') {
+        if (titleWrap) titleWrap.style.display = 'none';
+        if (titleInput) titleInput.required = false;
+        
+        if (subjectWrap) subjectWrap.style.display = 'block';
+        if (subjectInput) subjectInput.required = true;
+        
+        if (semSelect) semSelect.innerHTML = '<option value="">Select…</option>' + [1,2,3,4,5,6].map(s => `<option value="${s}">Semester ${s}</option>`).join('');
+      } else {
+        if (titleWrap) titleWrap.style.display = 'block';
+        if (titleInput) titleInput.required = true;
+        
+        if (subjectWrap) subjectWrap.style.display = 'none';
+        if (subjectInput) subjectInput.required = false;
+        
+        if (semSelect) semSelect.innerHTML = '<option value="">Select…</option>' + [1,2,3,4,5,6,7,8].map(s => `<option value="${s}">Semester ${s}</option>`).join('');
+      }
+    });
+    // Trigger initially to set correct state
+    courseSelect.dispatchEvent(new Event('change'));
+  }
+
   fileInput.addEventListener('change', () => {
     fileLabel.textContent = fileInput.files[0]?.name || 'Click to choose a PDF, or drag it here';
   });
@@ -129,6 +169,15 @@ export function initUploadForm({ endpoint, onUploaded }) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!fileInput.files[0]) return toast('Please choose a PDF file.', 'error');
+    
+    // Auto-generate title for BCA
+    if (endpoint === 'papers' && courseSelect && courseSelect.value === 'BCA') {
+      const s = subjectInput?.value;
+      const y = form.querySelector('[name="year"]')?.value;
+      const t = form.querySelector('[name="exam_type"]')?.value;
+      if (titleInput) titleInput.value = `${s || 'Paper'} ${t || ''} ${y || ''}`.trim();
+    }
+    
     const fd = new FormData(form);
     btn.disabled = true;
     btn.textContent = 'Uploading…';
@@ -184,9 +233,152 @@ export function initTable({ endpoint }) {
       host.querySelectorAll('[data-del]').forEach((b) =>
         b.addEventListener('click', () => remove(b.dataset.del, b.dataset.title))
       );
+      host.querySelectorAll('.edit-btn').forEach((b) =>
+        b.addEventListener('click', () => {
+          const row = data.find(d => d.id == b.dataset.id);
+          if (row) openEditModal(row);
+        })
+      );
     } catch (ex) {
       host.innerHTML = `<div class="p-8 text-center text-red-500">${esc(ex.message)}</div>`;
     }
+  }
+
+  function openEditModal(r) {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 backdrop-blur-sm p-4';
+    
+    overlay.innerHTML = `
+      <div class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-bold text-ink-900">Edit ${endpoint.replace('-', ' ')}</h2>
+          <button class="modal-close text-ink-400 hover:text-ink-600"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <form id="edit-form" class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          ${FORM_FIELDS[endpoint].map(fieldHtml).join('')}
+          <div class="sm:col-span-2 flex justify-end gap-3 mt-4">
+            <button type="button" class="modal-close btn-secondary btn-md">Cancel</button>
+            <button type="submit" class="btn-primary btn-md">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const form = overlay.querySelector('#edit-form');
+    // Pre-fill values
+    FORM_FIELDS[endpoint].forEach(f => {
+      const input = form.querySelector(`[name="${f.name}"]`);
+      if (input && r[f.name] !== undefined && r[f.name] !== null) {
+        input.value = r[f.name];
+      }
+    });
+
+    if (endpoint === 'papers') {
+      const courseSelect = form.querySelector('[name="course"]');
+      const titleWrap = form.querySelector('[name="title"]')?.closest('div');
+      const subjectWrap = form.querySelector('[name="subject"]')?.closest('div');
+      const semesterSelect = form.querySelector('[name="semester"]');
+      const subjectSelect = form.querySelector('[name="subject"]');
+      
+      function updateSubjectOptions(sem) {
+         if(!subjectSelect) return;
+         subjectSelect.innerHTML = '<option value="">Select…</option>';
+         if (!sem || !SUBJECTS_BY_SEM[sem]) return;
+         SUBJECTS_BY_SEM[sem].forEach(sub => {
+            const opt = document.createElement('option');
+            opt.value = sub; opt.textContent = sub;
+            subjectSelect.appendChild(opt);
+         });
+      }
+
+      function updatePaperForm() {
+        const val = courseSelect?.value;
+        if (val === 'BCA') {
+          if (titleWrap) titleWrap.style.display = 'none';
+          if (subjectWrap) subjectWrap.style.display = 'block';
+          if (semesterSelect) {
+            Array.from(semesterSelect.options).forEach(opt => {
+              opt.style.display = (opt.value && parseInt(opt.value) > 6) ? 'none' : 'block';
+            });
+            if (semesterSelect.value > 6) semesterSelect.value = '';
+          }
+        } else if (val === 'Others') {
+          if (titleWrap) titleWrap.style.display = 'block';
+          if (subjectWrap) subjectWrap.style.display = 'none';
+          if (semesterSelect) {
+            Array.from(semesterSelect.options).forEach(opt => opt.style.display = 'block');
+          }
+        }
+      }
+      
+      if (semesterSelect) {
+        semesterSelect.addEventListener('change', () => {
+          updateSubjectOptions(semesterSelect.value);
+        });
+        if (r.semester) {
+           updateSubjectOptions(r.semester);
+           if (r.subject) subjectSelect.value = r.subject;
+        }
+      }
+      if (courseSelect) {
+        courseSelect.addEventListener('change', updatePaperForm);
+        updatePaperForm();
+      }
+    } else if (endpoint === 'notes') {
+      const semesterSelect = form.querySelector('[name="semester"]');
+      const subjectSelect = form.querySelector('[name="subject"]');
+      if (semesterSelect && subjectSelect) {
+        semesterSelect.addEventListener('change', () => {
+           subjectSelect.innerHTML = '<option value="">Select…</option>';
+           const sem = semesterSelect.value;
+           if (!sem || !SUBJECTS_BY_SEM[sem]) return;
+           SUBJECTS_BY_SEM[sem].forEach(sub => {
+              const opt = document.createElement('option');
+              opt.value = sub; opt.textContent = sub;
+              subjectSelect.appendChild(opt);
+           });
+        });
+        if (r.semester) {
+           semesterSelect.dispatchEvent(new Event('change'));
+           if (r.subject) subjectSelect.value = r.subject;
+        }
+      }
+    }
+
+    const closeBtns = overlay.querySelectorAll('.modal-close');
+    closeBtns.forEach(b => b.addEventListener('click', () => overlay.remove()));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Auto-generate title for BCA
+      if (endpoint === 'papers' && form.querySelector('[name="course"]')?.value === 'BCA') {
+        const s = form.querySelector('[name="subject"]')?.value;
+        const y = form.querySelector('[name="year"]')?.value;
+        const t = form.querySelector('[name="exam_type"]')?.value;
+        const titleInput = form.querySelector('[name="title"]');
+        if (titleInput) titleInput.value = `${s || 'Paper'} ${t || ''} ${y || ''}`.trim();
+      }
+      
+      const payload = Object.fromEntries(new FormData(form).entries());
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving…';
+      try {
+        await api(`/${endpoint}/${r.id}`, {
+          method: 'PATCH',
+          body: payload
+        });
+        toast('Updated successfully!', 'success');
+        overlay.remove();
+        reload();
+      } catch (ex) {
+        toast(ex.message || 'Update failed.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Save Changes';
+      }
+    });
   }
 
   function rowHtml(r) {
@@ -199,7 +391,8 @@ export function initTable({ endpoint }) {
       <td class="px-4 py-3 text-ink-500">${formatBytes(r.file_size)}</td>
       <td class="px-4 py-3 text-ink-500">${formatDate(r.created_at)}</td>
       <td class="px-4 py-3 text-ink-500">${r.downloads || 0}</td>
-      <td class="px-4 py-3 text-right">
+      <td class="px-4 py-3 text-right space-x-2">
+        <button data-id="${r.id}" class="edit-btn btn-secondary btn-sm">Edit</button>
         <button data-del="${r.id}" data-title="${esc(r.title)}" class="btn-danger btn-sm">Delete</button>
       </td>
     </tr>`;

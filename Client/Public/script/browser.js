@@ -32,32 +32,68 @@ export function initBrowser({ endpoint, type }) {
   }
 
   function card(r) {
-    const tags = [
-      r.semester ? `Sem ${esc(r.semester)}` : null,
-      isPaper && r.year ? esc(r.year) : null,
-      isPaper && r.exam_type ? esc(r.exam_type) : null,
-      !isPaper && r.unit ? esc(r.unit) : null,
-    ]
-      .filter(Boolean)
-      .map((t) => `<span class="badge-ink">${t}</span>`)
-      .join('');
+    const iconSvg = isPaper
+      ? '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />'
+      : '<path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />';
+
+    const displayTitle = (isPaper && r.course === 'BCA' && r.subject) ? r.subject : (r.title || r.subject || r.topic);
+    
+    let metaLines = [];
+    if (r.university) metaLines.push(r.university);
+    const line1 = [r.course, r.semester ? `Semester ${r.semester}` : null].filter(Boolean).join(', ');
+    if (line1) metaLines.push(line1);
+
+    if (isPaper) {
+      const line2 = [r.year, r.exam_type].filter(Boolean).join(', ');
+      if (line2) metaLines.push(line2);
+    } else {
+      const line2 = [r.subject || r.topic, r.unit].filter(Boolean).join(', ');
+      if (line2) metaLines.push(line2);
+    }
+
+    const metaHtml = metaLines.map(line => `<p class="text-sm font-medium text-ink-500">${esc(line)}</p>`).join('');
 
     return `
-    <div class="card flex flex-col p-5 transition hover:shadow-lg">
+    <div class="card group flex flex-col p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-500/10 border border-ink-200/50 hover:border-brand-300/50 bg-white">
       <div class="flex items-start justify-between gap-3">
-        <div class="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-brand-50 text-xl">${icon}</div>
-        <span class="text-xs text-ink-400">${formatBytes(r.file_size)}</span>
+        <div class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-50 to-brand-100/50 text-brand-600 shadow-sm ring-1 ring-inset ring-brand-200/50 transition-transform group-hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            ${iconSvg}
+          </svg>
+        </div>
+        <span class="inline-flex items-center rounded-full bg-ink-50 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-ink-500 ring-1 ring-inset ring-ink-200/50">
+          ${formatBytes(r.file_size)}
+        </span>
       </div>
-      <h3 class="mt-3 line-clamp-2 font-semibold text-ink-900">${esc(r.title)}</h3>
-      <p class="mt-1 text-sm text-ink-500">${esc(r.topic || r.subject || 'General')}</p>
-      ${r.description ? `<p class="mt-2 line-clamp-2 text-sm text-ink-500">${esc(r.description)}</p>` : ''}
-      <div class="mt-3 flex flex-wrap gap-1.5">${tags}</div>
-      <div class="mt-auto flex items-center justify-between pt-4">
-        <span class="text-xs text-ink-400">${formatDate(r.created_at)} · ${r.downloads || 0} ⬇</span>
+      
+      <div class="mt-5 flex-1">
+        <h3 class="text-lg font-bold tracking-tight text-ink-900 line-clamp-2 group-hover:text-brand-600 transition-colors mb-1.5">${esc(displayTitle)}</h3>
+        <div class="flex flex-col gap-1">
+          ${metaHtml}
+        </div>
+        ${r.description ? `<p class="mt-2.5 line-clamp-2 text-sm leading-relaxed text-ink-600">${esc(r.description)}</p>` : ''}
       </div>
-      <div class="mt-3 grid grid-cols-2 gap-2">
-        <a href="${esc(r.file_url)}" target="_blank" rel="noopener" class="btn-outline btn-sm">View</a>
-        <a href="/api/${endpoint}/${r.id}/download" class="btn-primary btn-sm">Download</a>
+      
+      <div class="mt-5 flex items-center justify-between border-t border-ink-100 pt-4 text-xs font-medium text-ink-500">
+        <span class="flex items-center gap-1.5" title="Uploaded on ${formatDate(r.created_at)}">
+          <svg class="h-4 w-4 text-ink-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+          ${formatDate(r.created_at)}
+        </span>
+        <span class="flex items-center gap-1.5" title="${r.downloads || 0} downloads">
+          <svg class="h-4 w-4 text-ink-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+          ${r.downloads || 0}
+        </span>
+      </div>
+      
+      <div class="mt-4 grid grid-cols-2 gap-3">
+        <a href="${esc(r.file_url)}" target="_blank" rel="noopener" class="btn-outline btn-sm flex items-center justify-center gap-2">
+          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+          Preview
+        </a>
+        <a href="/api/${endpoint}/${r.id}/download" class="btn-primary btn-sm flex items-center justify-center gap-2">
+          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+          Download
+        </a>
       </div>
     </div>`;
   }
@@ -109,17 +145,11 @@ export function initBrowser({ endpoint, type }) {
       if (subject) fill(subject, f.subjects || [], 'All subjects');
       if (topic) fill(topic, f.topics || [], 'All topics');
       if (semester) {
-        fill(
-          semester,
-          (f.semesters || []).map((s) => s),
-          'All semesters'
-        );
-      if (semester) {
         semester.innerHTML =
           `<option value="">All semesters</option>` +
           (f.semesters || []).map((s) => `<option value="${s}">Semester ${s}</option>`).join('');
       }
-      if (year) fill(year, f.years, 'All years');
+      if (year) fill(year, f.years || [], 'All years');
     } catch {
       /* filters optional */
     }

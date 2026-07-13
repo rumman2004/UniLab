@@ -3,7 +3,7 @@
 //  Papers and Notes are almost identical (a titled PDF with some
 //  metadata), so both are built from this single factory.
 // ------------------------------------------------------------
-import { Router } from 'express';
+import express, { Router } from 'express';
 import multer from 'multer';
 import crypto from 'node:crypto';
 import { supabase, BUCKET, isSupabaseConfigured } from '../config/supabase.js';
@@ -185,6 +185,23 @@ export function createResourceRouter({ table, folder, fields }) {
       }
       res.status(201).json({ data });
     });
+  });
+
+  // ---- ADMIN: edit a resource (metadata only) ----
+  router.patch('/:id', requireAdmin, express.json(), async (req, res) => {
+    if (!guard(res)) return;
+    const meta = pickFields(req.body);
+    if (Object.keys(meta).length === 0) return res.status(400).json({ error: 'No fields provided.' });
+
+    const { data, error } = await supabase
+      .from(table)
+      .update(meta)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ data });
   });
 
   // ---- ADMIN: delete a resource (row + stored file) ----

@@ -4,5 +4,5 @@ import { createResourceRouter } from './resources.js';
 export default createResourceRouter({
   table: 'papers',
   folder: 'papers',
-  fields: ['title', 'subject', 'course', 'semester', 'year', 'exam_type'],
+  fields: ['title', 'university', 'subject', 'course', 'semester', 'year', 'exam_type'],
 });
